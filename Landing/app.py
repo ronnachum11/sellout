@@ -30,9 +30,11 @@ def start_ai():
         {
             "name": "Ron Nachum",
             "email": "ronnachum@college.harvard.edu",
+            "phone": "7033388179",
             "company": "Jane Street",
             "title": "Head of Trading Strategies",
-            "linkedin": "https://linkedin.com/in/ron-nachum"
+            "linkedin": "https://linkedin.com/in/ron-nachum",
+            "company_website": "https://janestreet.com"
         }
     ]
 
@@ -61,6 +63,10 @@ def on_reply(offer, customer):
 
 def call_customer(offer, customer):
     print("\n\n\nCalling Customer...")
+    ## INITIAL MESSAGE GREETING CUSTOMER
+    
+
+
     print("Call Complete")
 
 if __name__ == '__main__':
