@@ -17,14 +17,61 @@
       </section>
     
       <section id="input-section" class="column">
-        <form class="column">
-          <input type="text" id="company-website" placeholder="Company Website">
-          <textarea id="campaign-strategy" placeholder="Campaign Strategy"></textarea>
-          <button type="submit">Launch Campaign</button>
+        <form id="campaign-form" class="column">
+            <input type="text" id="company-website" placeholder="Company Website">
+            <input type="text" id="company-name" placeholder="Company Name">
+            <textarea id="campaign-strategy" placeholder="Campaign Strategy"></textarea>
+            <button type="submit">Launch Campaign</button>
         </form>
       </section>
   </div>
 
+  <script>
+    document.getElementById('campaign-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    var companyWebsite = document.getElementById('company-website');
+    var companyName = document.getElementById('company-name');
+    var campaignStrategy = document.getElementById('campaign-strategy');
+    var submitButton = document.querySelector('#campaign-form button');
+
+    var companyWebsiteValue = companyWebsite.value;
+    var companyNameValue = companyName.value;
+    var campaignStrategyValue = campaignStrategy.value;
+
+    // Disable the inputs and the button
+    companyWebsite.disabled = true;
+    companyName.disabled = true;
+    campaignStrategy.disabled = true;
+    submitButton.style.display = 'none';
+
+    // Add a loading message and a gif
+    var loadingMessage = document.createElement('p');
+    loadingMessage.textContent = 'Processing...';
+    var loadingGif = document.createElement('img');
+    loadingGif.classList.add('loading-gif')
+    loadingGif.src = "{{ url_for('static', filename='images/spinner.gif') }}"; // replace with your gif path
+    submitButton.parentNode.appendChild(loadingMessage);
+    submitButton.parentNode.appendChild(loadingGif);
+
+    fetch('/start-ai', {
+        method: 'POST',
+        headers: {
+        'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+        company_website: companyWebsiteValue,
+        company_name: companyNameValue,
+        campaign_strategy: campaignStrategyValue,
+        }),
+    })
+    .then(response => response.json())
+    .then(data => console.log(data))
+    .catch((error) => {
+        console.error('Error:', error);
+    });
+    });
+  </script>
 
 </body>
 </html>

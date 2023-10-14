@@ -113,8 +113,15 @@ body {
     color: #fff;
     border: black solid 2px;
   }
+
+  text:disabled, textarea:disabled {
+    background: #777;
+  }
   
   #input-section button:hover {
     background-color: #777;
   }
   
+  .loading-gif {
+    width: 3vw;
+  }
