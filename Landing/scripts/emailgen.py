@@ -12,17 +12,20 @@ from langchain.tools import BaseTool, StructuredTool, Tool, tool
 from scripts.rag import get_tool, create_query_tool
 
 GPT_VERSION = "gpt-3.5-turbo"
+TEMPERATURE = 0.3
 
 dotenv.load_dotenv()
 
 openai.api_key = os.environ.get("OPENAI_API_KEY")
 print(openai.api_key)
 
+VERBOSE=True
+
 class EmailGenerator:
     def __init__(self, num_iterations, initial_prompt, company_name, company_kb_id, customer_company_name, customer_name, customer_url: List[str]):
         # company_points: list[str] = get_company_info(company)
         # customer_points: list[str] = get_customer_info(customer)
-        
+        self.customer_name = customer_name
         
         company_tool = create_query_tool(f"{company_name} website", f"Get info about {company_name} by asking ACTUAL QUESTIONS, e.g. 'What is ChatGPT for Enterprise' instead of 'ChatGPT for enterprise'", company_kb_id)
         
@@ -33,17 +36,17 @@ class EmailGenerator:
         #     url_list=company_url_list
         # )
         company_llm = initialize_agent(
-            [company_tool], ChatOpenAI(model_name=GPT_VERSION, temperature=0.9, max_tokens=1000), agent=AgentType.ZERO_SHOT_REACT_DESCRIPTION, verbose = False
+            [company_tool], ChatOpenAI(model_name=GPT_VERSION, temperature=TEMPERATURE, max_tokens=1000), agent=AgentType.ZERO_SHOT_REACT_DESCRIPTION, verbose = VERBOSE, handle_parsing_errors=True
         )
         
         customer_tool = get_tool(f"{customer_company_name} website", f"Get info about {customer_company_name} by asking ACTUAL QUESTIONS, e.g. 'What is ChatGPT for Enterprise' instead of 'ChatGPT for enterprise'", customer_url)
         customer_llm = initialize_agent(
-            [customer_tool], ChatOpenAI(model_name=GPT_VERSION, temperature=0.9, max_tokens=1000), agent=AgentType.ZERO_SHOT_REACT_DESCRIPTION, verbose = False
+            [customer_tool], ChatOpenAI(model_name=GPT_VERSION, temperature=TEMPERATURE, max_tokens=1000), agent=AgentType.ZERO_SHOT_REACT_DESCRIPTION, verbose = VERBOSE, handle_parsing_errors=True
         )
         
         
-        company_points = company_llm.run(f"Explain who {company_name} is in detail. Then, generate a list of points about the solutions that {company_name} provides. Write in second person.")
-        customer_points = customer_llm.run(f"Explain who {customer_company_name} is in detail. Then, generate a list of points about the problems that {customer_company_name} has. Write in second person.")
+        company_points = company_llm.run(f"Explain who {company_name} is in detail. Then, generate a list of points about the solutions that {company_name} provides.")
+        customer_points = customer_llm.run(f"Explain who {customer_company_name} is in detail. Then, generate a list of points about the problems that {customer_company_name} has.")
         print("INIT: CUSTOMER POINTS", customer_points)
         print("INIT: COMPANY POINTS", company_points)
         # company_points = """
@@ -84,7 +87,7 @@ class EmailGenerator:
         response = openai.ChatCompletion.create(
             model=GPT_VERSION,
             messages = message,
-            temperature=0.9,
+            temperature=TEMPERATURE,
             max_tokens=1000
         )
         print("EMAIL: generated initial email", response)
@@ -102,13 +105,14 @@ class EmailGenerator:
         Your sales team has provided the following feedback:
         {sales_feedback}
 
-        Please rewrite the email according to these suggestions.
+        Please rewrite the email, addressed to {self.customer_name} according to these suggestions.
+        Please aim to make the email useful to both the customer and the sales team.
         """
         message=[{"role": "user", "content": prompt}, {"role": "system", "content": self.initial_prompt}]
         response = openai.ChatCompletion.create(
             model=GPT_VERSION,
             messages = message,
-            temperature=0.7,
+            temperature=TEMPERATURE,
             max_tokens=1000
         )
         content = response["choices"][0]["message"]["content"]
@@ -162,13 +166,12 @@ if __name__ == "__main__":
     #     "https://glean.com/product/knowledge-management"
     # ]
     company_kb_id = "f1970b8b-408b-4aa2-aefa-e0a1efa3bdbc"
+    company_name = "Glean"
     
     email_gen = EmailGenerator(
         num_iterations=3,
-        company_name="Glean",
-        initial_prompt="""
-        You are an email-writing assistant for {company_name} that writes first-contact emails to potential clients.
-        """,
+        company_name=company_name,
+        initial_prompt=f"You are an email-writing assistant for {company_name} that writes first-contact emails to potential clients.",
         company_kb_id=company_kb_id,
         customer_name="Ron",
         customer_company_name="Jane Street",
