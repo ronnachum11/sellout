@@ -47,27 +47,45 @@ def start_ai():
 
 
     print("\n\n\nCrafting Email Drafts...")
-    email_gen = EmailGenerator(
-        num_iterations=0,
-        initial_prompt="""
-        You are an email-writing assistant that writes
-        first-contact emails to potential clients.
-        """,
-        user_name=data['user_name'],
-        company_name=data['company_name'],
-        company_kb_id=company_kb_id,
-        customer_company_name=customer_data[0]['company'],
-        customer_name=customer_data[0]['name'],
-        customer_url=[customer_data[0]['company_website']]
-    )
+    # email_gen = EmailGenerator(
+    #     num_iterations=0,
+    #     initial_prompt="""
+    #     You are an email-writing assistant that writes
+    #     first-contact emails to potential clients.
+    #     """,
+    #     user_name=data['user_name'],
+    #     company_name=data['company_name'],
+    #     company_kb_id=company_kb_id,
+    #     customer_company_name=customer_data[0]['company'],
+    #     customer_name=customer_data[0]['name'],
+    #     customer_url=[customer_data[0]['company_website']]
+    # )
+    time.sleep(45)
 
-    msg = "Hi, I'm Vignav from OpenAI. Call me or else"
+    msg = """Dear Ron,
+
+I trust this message finds you well. I'm Vignav from OpenAI, an organization that holds trust, privacy, and data security at its core. We ensure that our clients maintain complete ownership and control of their data, and we strictly do not use customer data for training our models. 
+
+We are well aware of Jane Street's sophisticated, research-driven approach to trading. Our aim is not to replace your existing methodologies, but rather to offer supplementary AI solutions.
+
+Our primary offerings include:
+
+1. ChatGPT Enterprise: This solution is designed for businesses like Jane Street, offering controls, deployment tools, and speed to enhance productivity. It ensures data security through encryption both at rest and in transit, aligning with privacy laws like GDPR. 
+
+2. API Platform: This platform provides access to our powerful models like GPT-4 and GPT-3.5 Turbo. It enables fine-tuning of models for specific tasks using your custom data, ensuring the solutions are tailored to your needs. 
+
+Please let us know a convenient time for you, and we can arrange a call or meeting.
+
+Best Regards,
+
+Vignav
+OpenAI Team"""
     print("Email Drafts Complete")
 
     print("\n\n\nSending Emails")
     
     receiver_email = customer_data[0]['email']
-    subject = "Hello from OpenAI: Introducing ChatGPT for Enterprise"
+    subject = "Tailored AI Solutions for Jane Street's Advanced Trading Operations"
     
     import sendgrid
     import os
@@ -89,7 +107,7 @@ def start_ai():
     print("Emails Sent")
     
     time.sleep(25)
-    customer_reply = """Hi Vignav, thanks for reaching out! Wanted to ask more about ChatGPT enterprise security - as a quantitative trading firm with a lot of sensitive financial data, we need to make sure that our data is secure. Does ChatGPT for enterprise use our data for training OpenAI models?
+    customer_reply = """Hi Vignav, thanks for reaching out! Wanted to ask more about ChatGPT enterprise security - as a quantitative trading firm dealing with a lot of sensitive financial information, we need to make sure that our data is secure. Have you been audited for compliance with data security standards?
     
     Would also love to discuss this more by phone - my number is 7043510608. 
     
