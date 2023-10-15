@@ -19,7 +19,7 @@ openai.api_key = os.environ.get("OPENAI_API_KEY")
 print(openai.api_key)
 
 class EmailGenerator:
-    def __init__(self, num_iterations, initial_prompt, company_name, company_kb_id, customer_name, customer_url: List[str]):
+    def __init__(self, num_iterations, initial_prompt, company_name, company_kb_id, customer_company_name, customer_name, customer_url: List[str]):
         # company_points: list[str] = get_company_info(company)
         # customer_points: list[str] = get_customer_info(customer)
         
@@ -36,14 +36,16 @@ class EmailGenerator:
             [company_tool], ChatOpenAI(model_name=GPT_VERSION, temperature=0.9, max_tokens=1000), agent=AgentType.ZERO_SHOT_REACT_DESCRIPTION, verbose = False
         )
         
-        customer_tool = get_tool(f"{customer_name} website", f"Get info about {customer_name} by asking ACTUAL QUESTIONS, e.g. 'What is ChatGPT for Enterprise' instead of 'ChatGPT for enterprise'", customer_url)
+        customer_tool = get_tool(f"{customer_company_name} website", f"Get info about {customer_company_name} by asking ACTUAL QUESTIONS, e.g. 'What is ChatGPT for Enterprise' instead of 'ChatGPT for enterprise'", customer_url)
         customer_llm = initialize_agent(
             [customer_tool], ChatOpenAI(model_name=GPT_VERSION, temperature=0.9, max_tokens=1000), agent=AgentType.ZERO_SHOT_REACT_DESCRIPTION, verbose = False
         )
         
         
         company_points = company_llm.run(f"Explain who {company_name} is in detail. Then, generate a list of points about the solutions that {company_name} provides. Write in second person.")
-        customer_points = customer_llm.run(f"Explain who {customer_name} is in detail. Then, generate a list of points about the problems that {customer_name} has. Write in second person.")
+        customer_points = customer_llm.run(f"Explain who {customer_company_name} is in detail. Then, generate a list of points about the problems that {customer_company_name} has. Write in second person.")
+        print("INIT: CUSTOMER POINTS", customer_points)
+        print("INIT: COMPANY POINTS", company_points)
         # company_points = """
         # 1. OpenAI makes state-of-the-art language models
         # 2. OpenAI provides easy-to-use APIs to call out
@@ -97,7 +99,7 @@ class EmailGenerator:
         The customer has provided the following feedback:
         {customer_feedback}
 
-        The sales team has provided the following feedback:
+        Your sales team has provided the following feedback:
         {sales_feedback}
 
         Please rewrite the email according to these suggestions.
@@ -125,7 +127,10 @@ class CustomerAgent:
         prompt = f" Here is an email you receive: \n\n{draft}.\n\nPlease give a thorough critique on the above email. Explain exactly why the solutions the company provides are useless to you. Please number your critiques and classify each as MAJOR or MINOR."
         message=[{"role": "user", "content": prompt}, {"role": "system", "content": self.initial_prompt}]
         
-        return self.customer_llm.run(message)
+        response = self.customer_llm.run(message)
+        print("CRITIQUE: CUSTOMER", response)
+
+        return response
 
 
 class SalesAgent:
@@ -140,7 +145,10 @@ class SalesAgent:
         prompt = f" Here is an email your subordinate has sent: \n\n{draft}.\n\nPlease give a thorough critique on the above email. Explain exactly why the email does or does not represent the solutions the company can actually provide. Please number your critiques and classify each as MAJOR or MINOR."
         message=[{"role": "user", "content": prompt}, {"role": "system", "content": self.initial_prompt}]
         
-        return self.company_llm.run(message)
+        response = self.company_llm.run(message)
+        print("CRITIQUE: SALES", response)
+
+        return response
 
 
 if __name__ == "__main__":
@@ -157,13 +165,13 @@ if __name__ == "__main__":
     
     email_gen = EmailGenerator(
         num_iterations=3,
-        initial_prompt="""
-        You are an email-writing assistant that writes
-        first-contact emails to potential clients.
-        """,
         company_name="Glean",
+        initial_prompt="""
+        You are an email-writing assistant for {company_name} that writes first-contact emails to potential clients.
+        """,
         company_kb_id=company_kb_id,
-        customer_name="Jane Street",
+        customer_name="Ron",
+        customer_company_name="Jane Street",
         customer_url=["https://www.janestreet.com/"]
     )
 
