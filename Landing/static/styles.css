@@ -20,8 +20,9 @@ body {
 
   header {
     text-align: left;
-    padding: 1em 0;
+    padding: 0.5em 0;
     margin-left: 7vw;
+    height: 10vh;
   }
   
   header h1 {
@@ -51,8 +52,8 @@ body {
 
   #hero-section {
     text-align: center;
-    margin: 2em 0;
-    height: 60vh;
+    margin: 1em 0;
+    height: 70vh;
     padding-right: 10vw;
     align-items: flex-start;
     padding-left: 5vw;
@@ -66,8 +67,8 @@ body {
   
   #input-section {
     text-align: center;
-    margin: 2em 0;
-    height: 60vh;
+    margin: 1em 0;
+    height: 70vh;
     padding-left: 10vw;
     width: 35vw;
   }
@@ -96,7 +97,7 @@ body {
     border: black solid 2px;
     width: 30vw;
     color: white;
-    height: 10vw;
+    height: 5vw;
     font-family: 'Inter', sans-serif !important;
     resize: vertical;
   }
@@ -104,7 +105,7 @@ body {
   #input-section button {
     margin: 1em;
     padding: 0.5em 1em;
-    width: 15vw;
+    width: 20vw;
     border-radius: 15px;
     font-size: 1em;
     cursor: pointer;
@@ -112,6 +113,7 @@ body {
     border: none;
     color: #fff;
     border: black solid 2px;
+    transition: 0.5s;
   }
 
   text:disabled, textarea:disabled {
@@ -119,7 +121,8 @@ body {
   }
   
   #input-section button:hover {
-    background-color: #777;
+    background-color: #565656;
+    transition: 0.5s;
   }
   
   .loading-gif {
@@ -127,7 +130,7 @@ body {
   }
 
   #particle-canvas {
-    position: fixed;
+    position: absolute;
     top: 0;
     left: 0;
     width: 100%;

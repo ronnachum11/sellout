@@ -6,33 +6,40 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
-    <div id="particle-canvas">
-        <header>
-            <h1>Sellout</h1>
-        </header>
+    <!-- <div id="particle-canvas"></div> -->
 
-        <div class="row">
-            <section id="hero-section" class="column">
-                <p>Create AI agent-run sales campaigns. <br><br> Ideation to first contact to call to close. <br><br> <strong>No human in the loop.</strong></p>
-            </section>
-            
-            <section id="input-section" class="column">
-                <form id="campaign-form" class="column">
-                    <input type="text" id="your-name" placeholder="Your Name">
-                    <input type="text" id="company-website" placeholder="Company Website">
-                    <input type="text" id="company-name" placeholder="Company Name">
-                    <textarea id="campaign-strategy" placeholder="Campaign Strategy"></textarea>
-                    <button type="submit">Launch Campaign</button>
-                </form>
-            </section>
-        </div>
+    <header>
+        <h1>Sellout</h1>
+    </header>
+
+    <div class="row">
+        <section id="hero-section" class="column">
+            <p>Create AI agent-run sales campaigns. <br><br> Ideation to first contact to call to close. <br><br> <strong>No human in the loop.</strong></p>
+        </section>
+        
+        <section id="input-section" class="column">
+            <form id="campaign-form" class="column">
+                <input type="text" id="user-name" placeholder="Your Name">
+                <input type="text" id="user-email" placeholder="Your Email">
+                <input type="text" id="company-website" placeholder="Company Website">
+                <input type="text" id="company-name" placeholder="Company Name">
+                <textarea id="campaign-strategy" placeholder="Campaign Strategy"></textarea>
+                <button type="submit">Launch Your AIgent Campaign</button>
+            </form>
+        </section>
+
+    </div>
+
+    <div class="row">
+        <h5>Made by Ron Nachum, Vignav Ramesh, Agnim Agarwal, Michael Zhou, & Naomi Bashkansky @ AGI House</h5>
     </div>
 
   <script>
     document.getElementById('campaign-form').addEventListener('submit', function(e) {
     e.preventDefault();
 
-    var yourName = document.getElementById('your-name');
+    var userName = document.getElementById('user-name');
+    var userEmail = document.getElementById('user-email');
     var companyWebsite = document.getElementById('company-website');
     var companyName = document.getElementById('company-name');
     var campaignStrategy = document.getElementById('campaign-strategy');
@@ -43,7 +50,8 @@
     var campaignStrategyValue = campaignStrategy.value;
 
     // Disable the inputs and the button
-    yourName.disabled = true;
+    userName.disabled = true;
+    userEmail.disabled = true;
     companyWebsite.disabled = true;
     companyName.disabled = true;
     campaignStrategy.disabled = true;
@@ -64,7 +72,8 @@
         'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-            your_name: yourName.value,
+            user_name: userName.value,
+            user_email: userEmail.value,
             company_website: companyWebsiteValue,
             company_name: companyNameValue,
             campaign_strategy: campaignStrategyValue,
@@ -80,16 +89,16 @@
 
     <script src="https://rawgit.com/JulianLaval/canvas-particle-network/master/particle-network.min.js"></script>
     <script>
-        var canvasDiv = document.getElementById('particle-canvas');
-        var options = {
-            particleColor: '#888',
-            background: 'your_background_image_or_color',
-            interactive: true,
-            speed: 'medium',
-            density: 'high'
-        };
-        var particleCanvas = new ParticleNetwork(canvasDiv, options);
+    var canvasDiv = document.getElementById('particle-canvas');
+    var options = {
+        particleColor: '#888',
+        interactive: true,
+        speed: 'medium',
+        density: 'high'
+    };
+    var particleCanvas = new ParticleNetwork(canvasDiv, options);
     </script>
+
 
 </body>
 </html>
