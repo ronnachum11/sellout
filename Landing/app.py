@@ -74,7 +74,7 @@ def start_ai():
 
     msg = """Dear Ron,
 
-I trust this message finds you well. I'm Vignav from OpenAI, an organization that holds trust, privacy, and data security at its core. We ensure that our clients maintain complete ownership and control of their data, and we strictly do not use customer data for training our models. 
+I trust this message finds you well. I'm Vignav from Open A I, an organization that holds trust, privacy, and data security at its core. We ensure that our clients maintain complete ownership and control of their data, and we strictly do not use customer data for training our models. 
 
 We are well aware of Jane Street's sophisticated, research-driven approach to trading. Our aim is not to replace your existing methodologies, but rather to offer supplementary AI solutions.
 
@@ -89,7 +89,7 @@ Please let us know a convenient time for you, and we can arrange a call or meeti
 Best Regards,
 
 Vignav
-OpenAI Team"""
+Open A I Team"""
     print("Email Drafts Complete")
 
     print("\n\n\nSending Emails")
@@ -116,7 +116,7 @@ OpenAI Team"""
         
     print("Emails Sent")
     
-    time.sleep(30)
+    time.sleep(40)
     customer_reply = """Hi Vignav, thanks for reaching out! Wanted to ask more about ChatGPT enterprise security - as a quantitative trading firm dealing with a lot of sensitive financial information, we need to make sure that our data is secure. Have you been audited for compliance with data security standards?
     
     Would also love to discuss this more by phone - my number is 7043510608. 
@@ -146,22 +146,20 @@ def call_customer(customer, content):
     #     [company_tool], ChatOpenAI(model_name=GPT_VERSION, temperature=0.9, max_tokens=1000), agent=AgentType.ZERO_SHOT_REACT_DESCRIPTION, verbose = False
     # )
     # text_to_read = company_llm.run(f"Write a phone call introductory message that responds to the following message: {content}.")
-    text_to_read = "Good evening! My name is Vignav, I'm a Sales Team Lead at OpenAI. I'm calling to respond to the question you mentioned in your recent email and chat a bit more about OpenAI enterprise with you - is now a good time?"
+    text_to_read = "Good evening! My name is Vignav, I'm a Sales Team Lead at Open A I. I'm calling to respond to the question you mentioned in your recent email and chat a bit more about Open A I enterprise with you - is now a good time?"
     print('START TEXT')
     print(text_to_read)
     print('END TEXT')
     # text_to_read = f"Hi {customer_name}, thanks for agreeing to talk to me about {company_name}'s offerings!"
     twiml = str('''<?xml version="1.0" encoding="UTF-8"?>
-               <Response>
-               <Gather input="speech" method="POST" speechTimeout="auto">
-               <Say voice="en-US-Standard-A">''' + text_to_read + '''</Say>
-               <Pause length="5"/>
-               <Say voice="en-US-Standard-A">Wonderful! So to respond to your question, just wanted to clarify that OpenAI does NOT use customer data to train our models. We have been audited for SOC2 compliance, a globally recognized standard that validates our commitment to data security. I hope that satisfies Jane Street's needs!</Say>
-                <Pause length="10"/>
-                <Say voice="en-US-Standard-A">We have worked with various industry leaders, like Block, Canva, Carlyle, and Zapier, who are redefining how they operate using OpenAI.</Say>
+                <Response>
+                <Say voice="en-US-Standard-A">''' + text_to_read + '''</Say>
                 <Pause length="5"/>
-               </Gather>
-               </Response>''')
+                <Say voice="en-US-Standard-A">Wonderful! So to respond to your question, just wanted to clarify that Open A I does NOT use customer data to train our models. We have been audited for SOC2 compliance, a globally recognized standard that validates our commitment to data security. I hope that satisfies Jane Street's needs!</Say>
+                    <Pause length="10"/>
+                    <Say voice="en-US-Standard-A">We have worked with various industry leaders, like Block, Canva, Carlyle, and Zapier, who are redefining how they operate using Open A I.</Say>
+                    <Pause length="5"/>
+                </Response>''')
 
     call = client.calls.create(
         twiml=twiml,
