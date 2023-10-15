@@ -116,13 +116,8 @@ OpenAI Team"""
         
     print("Emails Sent")
     
-<<<<<<< HEAD
-    # time.sleep(25)
-    customer_reply = """Hi Vignav, thanks for reaching out! Wanted to ask more about ChatGPT enterprise security - as a quantitative trading firm with a lot of sensitive financial data, we need to make sure that our data is secure. Does ChatGPT for enterprise use our data for training OpenAI models?
-=======
     time.sleep(25)
     customer_reply = """Hi Vignav, thanks for reaching out! Wanted to ask more about ChatGPT enterprise security - as a quantitative trading firm dealing with a lot of sensitive financial information, we need to make sure that our data is secure. Have you been audited for compliance with data security standards?
->>>>>>> 1c4c554 (Update)
     
     Would also love to discuss this more by phone - my number is 7043510608. 
     
@@ -159,11 +154,11 @@ def call_customer(customer, content):
     twiml = str('''<?xml version="1.0" encoding="UTF-8"?>
                <Response>
                <Gather input="speech" method="POST" speechTimeout="auto">
-               <Say voice="Salli">''' + text_to_read + '''</Say>
+               <Say voice="en-US-Standard-A">''' + text_to_read + '''</Say>
                <Pause length="5"/>
-               <Say voice="Salli">Wonderful! So to respond to your question, just wanted to clarify that OpenAI does NOT use customer data to train our models. We have been audited for SOC2 compliance, a globally recognized standard that validates our commitment to data security. I hope that satisfies Jane Street's needs!</Say>
+               <Say voice="en-US-Standard-A">Wonderful! So to respond to your question, just wanted to clarify that OpenAI does NOT use customer data to train our models. We have been audited for SOC2 compliance, a globally recognized standard that validates our commitment to data security. I hope that satisfies Jane Street's needs!</Say>
                 <Pause length="10"/>
-                <Say voice="Salli">We have worked with various industry leaders, like Block, Canva, Carlyle, and Zapier, who are redefining how they operate using OpenAI.</Say>
+                <Say voice="en-US-Standard-A">We have worked with various industry leaders, like Block, Canva, Carlyle, and Zapier, who are redefining how they operate using OpenAI.</Say>
                 <Pause length="5"/>
                </Gather>
                </Response>''')
