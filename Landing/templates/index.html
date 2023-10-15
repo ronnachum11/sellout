@@ -6,30 +6,33 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
+    <div id="particle-canvas">
+        <header>
+            <h1>Sellout</h1>
+        </header>
 
-  <header>
-    <h1>Sellout</h1>
-  </header>
-
-  <div class="row">
-    <section id="hero-section" class="column">
-        <p>Create AI agent-run sales campaigns. <br><br> Ideation to first contact to call to close. <br><br> <strong>No human in the loop.</strong></p>
-      </section>
-    
-      <section id="input-section" class="column">
-        <form id="campaign-form" class="column">
-            <input type="text" id="company-website" placeholder="Company Website">
-            <input type="text" id="company-name" placeholder="Company Name">
-            <textarea id="campaign-strategy" placeholder="Campaign Strategy"></textarea>
-            <button type="submit">Launch Campaign</button>
-        </form>
-      </section>
-  </div>
+        <div class="row">
+            <section id="hero-section" class="column">
+                <p>Create AI agent-run sales campaigns. <br><br> Ideation to first contact to call to close. <br><br> <strong>No human in the loop.</strong></p>
+            </section>
+            
+            <section id="input-section" class="column">
+                <form id="campaign-form" class="column">
+                    <input type="text" id="your-name" placeholder="Your Name">
+                    <input type="text" id="company-website" placeholder="Company Website">
+                    <input type="text" id="company-name" placeholder="Company Name">
+                    <textarea id="campaign-strategy" placeholder="Campaign Strategy"></textarea>
+                    <button type="submit">Launch Campaign</button>
+                </form>
+            </section>
+        </div>
+    </div>
 
   <script>
     document.getElementById('campaign-form').addEventListener('submit', function(e) {
     e.preventDefault();
 
+    var yourName = document.getElementById('your-name');
     var companyWebsite = document.getElementById('company-website');
     var companyName = document.getElementById('company-name');
     var campaignStrategy = document.getElementById('campaign-strategy');
@@ -40,6 +43,7 @@
     var campaignStrategyValue = campaignStrategy.value;
 
     // Disable the inputs and the button
+    yourName.disabled = true;
     companyWebsite.disabled = true;
     companyName.disabled = true;
     campaignStrategy.disabled = true;
@@ -60,9 +64,10 @@
         'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-        company_website: companyWebsiteValue,
-        company_name: companyNameValue,
-        campaign_strategy: campaignStrategyValue,
+            your_name: yourName.value,
+            company_website: companyWebsiteValue,
+            company_name: companyNameValue,
+            campaign_strategy: campaignStrategyValue,
         }),
     })
     .then(response => response.json())
@@ -72,6 +77,19 @@
     });
     });
   </script>
+
+    <script src="https://rawgit.com/JulianLaval/canvas-particle-network/master/particle-network.min.js"></script>
+    <script>
+        var canvasDiv = document.getElementById('particle-canvas');
+        var options = {
+            particleColor: '#888',
+            background: 'your_background_image_or_color',
+            interactive: true,
+            speed: 'medium',
+            density: 'high'
+        };
+        var particleCanvas = new ParticleNetwork(canvasDiv, options);
+    </script>
 
 </body>
 </html>

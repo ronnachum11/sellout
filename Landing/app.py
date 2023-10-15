@@ -53,6 +53,7 @@ def start_ai():
         You are an email-writing assistant that writes
         first-contact emails to potential clients.
         """,
+        user_name=data['user_name'],
         company_name=data['company_name'],
         company_kb_id=company_kb_id,
         customer_company_name=customer_data[0]['company'],
@@ -69,7 +70,7 @@ def start_ai():
 
     return jsonify(data)
 
-def on_reply(offer, customer):
+def on_reply():
     print("\n\n\nReplying to Response...")
     print("Reply Sent")
 
