@@ -116,13 +116,8 @@ OpenAI Team"""
         
     print("Emails Sent")
     
-<<<<<<< HEAD
-    # time.sleep(25)
-    customer_reply = """Hi Vignav, thanks for reaching out! Wanted to ask more about ChatGPT enterprise security - as a quantitative trading firm with a lot of sensitive financial data, we need to make sure that our data is secure. Does ChatGPT for enterprise use our data for training OpenAI models?
-=======
     time.sleep(25)
     customer_reply = """Hi Vignav, thanks for reaching out! Wanted to ask more about ChatGPT enterprise security - as a quantitative trading firm dealing with a lot of sensitive financial information, we need to make sure that our data is secure. Have you been audited for compliance with data security standards?
->>>>>>> 1c4c554 (Update)
     
     Would also love to discuss this more by phone - my number is 7043510608. 
     
