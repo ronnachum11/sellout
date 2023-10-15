@@ -24,7 +24,7 @@ def start_ai():
     data = request.get_json()
 
     print("Indexing Comany Data...")
-    company_kb_id = set_up_kb(data['company_name'], '', [data['company_website']])
+    company_kb_id = "d614a15a-4c62-4d03-861b-2ec7d82bbfe2" #set_up_kb(data['company_name'], '', [data['company_website']])
     print("Company Data Indexing Complete")
 
     print("\n\n\nIndexing Customer Data...")
@@ -61,7 +61,7 @@ def start_ai():
         customer_url=[customer_data[0]['company_website']]
     )
 
-    msg = email_gen.generate()
+    msg = "Hi, I'm Vignav from OpenAI. Call me or else"
     print("Email Drafts Complete")
 
     print("\n\n\nSending Emails")
@@ -88,7 +88,7 @@ def start_ai():
         
     print("Emails Sent")
     
-    time.sleep(15)
+    time.sleep(25)
     customer_reply = """Hi Vignav, thanks for reaching out! Wanted to ask more about ChatGPT enterprise security - as a quantitative trading firm with a lot of sensitive financial data, we need to make sure that our data is secure. Does ChatGPT for enterprise use our data for training OpenAI models?
     
     Would also love to discuss this more by phone - my number is 7043510608. 
