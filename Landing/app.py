@@ -6,6 +6,7 @@ import urllib.parse
 import json
 import time
 from scripts.rag import set_up_kb 
+from scripts.emailgen import EmailGenerator
 from twilio.rest import Client
 
 if os.path.exists("debug.env"):
@@ -23,7 +24,7 @@ def start_ai():
     data = request.get_json()
 
     print("Indexing Comany Data...")
-    id = set_up_kb(data['company_name'], '', [data['company_website']])
+    company_kb_id = set_up_kb(data['company_name'], '', [data['company_website']])
     print("Company Data Indexing Complete")
 
     print("\n\n\nIndexing Customer Data...")
@@ -39,21 +40,31 @@ def start_ai():
         }
     ]
 
+    customer_data = []
     for customer in customers:
-        call_customer(data['company_name'], customer['name'], customer['phone'])
-        customer_desires = [] # get_customer_info(customer['linkedin'])
+        customer_data.append(customer)
     print("Customer Data Indexing Complete")
 
-    print("\n\n\nCoalescing Company Offerings, Customer Needs...")
-
-    print("Coalescing Complete")
 
     print("\n\n\nCrafting Email Drafts...")
+    email_gen = EmailGenerator(
+        num_iterations=0,
+        initial_prompt="""
+        You are an email-writing assistant that writes
+        first-contact emails to potential clients.
+        """,
+        company_name=data['company_name'],
+        company_kb_id=company_kb_id,
+        customer_company_name=customer_data[0]['company'],
+        customer_name=customer_data[0]['name'],
+        customer_url=[customer_data[0]['company_website']]
+    )
 
+    msg = email_gen.generate()
     print("Email Drafts Complete")
 
     print("\n\n\nSending Emails")
-
+    print(msg)
     print("Emails Sent")
 
     return jsonify(data)
