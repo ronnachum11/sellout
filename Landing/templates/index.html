@@ -14,7 +14,9 @@
 
     <div class="row">
         <section id="hero-section" class="column">
-            <p>Create AI agent-run sales campaigns. <br><br> Ideation to first contact to call to close. <br><br> <strong>No human in the loop.</strong></p>
+            <p>Create AI agent-run sales campaigns.</p>
+            <p>Ideation to first contact to call to close.</p>
+            <p><strong>No human in the loop.</strong></p>
         </section>
         
         <section id="input-section" class="column">
@@ -28,9 +30,13 @@
             </form>
         </section>
 
+        <section id="output-section" class="column">
+            <h2>Sellout at Work:</h2>
+        </section>
+
     </div>
 
-    <div class="row">
+    <div id="footer" class="row">
         <h5>Made by Ron Nachum, Vignav Ramesh, Agnim Agarwal, Michael Zhou, & Naomi Bashkansky @ AGI House</h5>
     </div>
 
@@ -49,22 +55,74 @@
     var companyNameValue = companyName.value;
     var campaignStrategyValue = campaignStrategy.value;
 
-    // Disable the inputs and the button
-    userName.disabled = true;
-    userEmail.disabled = true;
-    companyWebsite.disabled = true;
-    companyName.disabled = true;
-    campaignStrategy.disabled = true;
-    submitButton.style.display = 'none';
+    var inputtedInfoDiv = document.createElement('div');
+    inputtedInfoDiv.classList.add('inputted-info-card');
+    inputtedInfoDiv.innerHTML = `
+        <h2>AIgent Sales Strategy:</h2>
+        <p>User Name: ${userName.value}</p>
+        <p>User Email: ${userEmail.value}</p>
+        <p>Company Website: ${companyWebsiteValue}</p>
+        <p>Company Name: ${companyNameValue}</p>
+        <p>Campaign Strategy: ${campaignStrategyValue}</p>
+    `;
 
-    // Add a loading message and a gif
-    var loadingMessage = document.createElement('p');
-    loadingMessage.textContent = 'Processing...';
+    var form = document.getElementById('campaign-form');
+    form.parentElement.style.display = 'none';
+
+    var outputSection = document.getElementById('output-section');
+    outputSection.appendChild(inputtedInfoDiv);
+    outputSection.style.display = 'flex';
+
     var loadingGif = document.createElement('img');
-    loadingGif.classList.add('loading-gif')
-    loadingGif.src = "{{ url_for('static', filename='images/spinner.gif') }}"; // replace with your gif path
-    submitButton.parentNode.appendChild(loadingMessage);
-    submitButton.parentNode.appendChild(loadingGif);
+    loadingGif.classList.add('loading-gif');
+    loadingGif.src = "{{ url_for('static', filename='images/spinner.gif') }}"; 
+
+    outputSection.appendChild(loadingGif);
+
+    var loadingMessages = [
+        "Building " + companyNameValue + " Knowledge Base...",
+        "Searching for Potential Leads...",
+        "Learning about Leads...",
+        "Crafting Email...",
+        "Sending Email...",
+        "Sent"
+    ];
+
+    var cardContents = [
+        '<div class="inputted-info-card"> <p>OpenAI Knowledege Base Built</p> </div>',
+        '<div class="inputted-info-card"> <p>Quant Firm Leads Discovered</p> </div>',
+        '<div class="inputted-info-card"> <p>First Lead: Ron Nachum @ Jane Street</p> </div>',
+        '<div class="inputted-info-card"> <p>Personalized Email Drafted</p> </div>',
+        '<div class="inputted-info-card"> <p>Sending Email</p> </div>',
+        '<div class="inputted-info-card"> <p>Email Sent</p> </div>',
+    ];
+
+    var messageIndex = 0;
+
+    var loadingMessageElement = document.createElement('p');
+    loadingMessageElement.classList.add('loading-message');
+    loadingMessageElement.textContent = loadingMessages[messageIndex];
+    outputSection.appendChild(loadingMessageElement);
+    outputSection.appendChild(loadingGif);
+
+    var intervalId = setInterval(function() {
+        var card = document.createElement('div');
+        card.classList.add('card');
+        card.innerHTML = cardContents[messageIndex];
+        outputSection.insertBefore(card, loadingMessageElement);
+
+        outputSection.removeChild(loadingGif);
+        outputSection.appendChild(loadingGif);
+
+        messageIndex++;
+        if (messageIndex < loadingMessages.length) {
+            loadingMessageElement.textContent = loadingMessages[messageIndex];
+        } else {
+            clearInterval(intervalId);
+            outputSection.removeChild(loadingGif);
+            outputSection.removeChild(loadingMessageElement);
+        }
+    }, 7000);
 
     fetch('/start-ai', {
         method: 'POST',

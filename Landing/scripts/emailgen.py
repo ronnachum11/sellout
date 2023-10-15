@@ -9,7 +9,7 @@ from langchain.agents import AgentType, initialize_agent
 from langchain.chat_models import ChatOpenAI
 from langchain.tools import BaseTool, StructuredTool, Tool, tool
 
-from rag import get_tool, create_query_tool
+from scripts.rag import get_tool, create_query_tool
 
 GPT_VERSION = "gpt-3.5-turbo"
 TEMPERATURE = 0.3
