@@ -65,12 +65,41 @@ def start_ai():
     print("Email Drafts Complete")
 
     print("\n\n\nSending Emails")
-    print(msg)
+    
+    receiver_email = customer_data[0]['email']
+    subject = "Hello from OpenAI: Introducing ChatGPT for Enterprise"
+    
+    import sendgrid
+    import os
+    from sendgrid.helpers.mail import Mail, Email, To, Content
+
+    sg = sendgrid.SendGridAPIClient(api_key="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")
+    from_email = Email("satyavejus@gmail.com")
+    to_email = To(receiver_email)
+    # subject = subject
+    content = Content("text/plain", msg)
+    mail = Mail(from_email, to_email, subject, content)
+
+    # Get a JSON-ready representation of the Mail object
+    mail_json = mail.get()
+
+    # Send an HTTP POST request to /mail/send
+    response = sg.client.mail.send.post(request_body=mail_json)
+        
     print("Emails Sent")
+    
+    time.sleep(15)
+    customer_reply = """Hi Vignav, thanks for reaching out! Wanted to ask more about ChatGPT enterprise security - as a quantitative trading firm with a lot of sensitive financial data, we need to make sure that our data is secure. Does ChatGPT for enterprise use our data for training OpenAI models?
+    
+    Would also love to discuss this more by phone - my number is 7043510608. 
+    
+    Look forward to chatting,
+    Ron"""
+    on_reply(customer_data[0], customer_reply)
 
     return jsonify(data)
 
-def on_reply():
+def on_reply(customer, message):
     print("\n\n\nReplying to Response...")
     print("Reply Sent")
 
