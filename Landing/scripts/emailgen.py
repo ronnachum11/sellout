@@ -9,7 +9,7 @@ from langchain.agents import AgentType, initialize_agent
 from langchain.chat_models import ChatOpenAI
 from langchain.tools import BaseTool, StructuredTool, Tool, tool
 
-from scripts.rag import get_tool, create_query_tool
+from rag import get_tool, create_query_tool
 
 GPT_VERSION = "gpt-3.5-turbo"
 TEMPERATURE = 0.3
@@ -22,9 +22,20 @@ print(openai.api_key)
 VERBOSE=True
 
 class EmailGenerator:
-    def __init__(self, num_iterations, initial_prompt, company_name, company_kb_id, customer_company_name, customer_name, customer_url: List[str]):
+    def __init__(
+            self,
+            num_iterations,
+            initial_prompt,
+            user_name,
+            company_name,
+            company_kb_id,
+            customer_company_name,
+            customer_name,
+            customer_url: List[str]
+        ):
         # company_points: list[str] = get_company_info(company)
         # customer_points: list[str] = get_customer_info(customer)
+        self.user_name = user_name
         self.customer_name = customer_name
         
         company_tool = create_query_tool(f"{company_name} website", f"Get info about {company_name} by asking ACTUAL QUESTIONS, e.g. 'What is ChatGPT for Enterprise' instead of 'ChatGPT for enterprise'", company_kb_id)
@@ -81,6 +92,7 @@ class EmailGenerator:
     
     def _generate_initial(self, company_points, customer_points):
         message=[{"role": "user", "content": f"""
+            Your name is {self.user_name}. Your are reaching out to a potential customer, {self.customer_name}.
             Information about your company: {company_points}
             Information about your client: {customer_points}
         """}, {"role": "system", "content": self.initial_prompt}]
@@ -105,7 +117,8 @@ class EmailGenerator:
         Your sales team has provided the following feedback:
         {sales_feedback}
 
-        Please rewrite the email, addressed to {self.customer_name} according to these suggestions.
+        Your name is {self.user_name}. The client's name is {self.customer_name}.
+        Please rewrite the email, addressed to {self.customer_name}, according to these suggestions.
         Please aim to make the email useful to both the customer and the sales team.
         """
         message=[{"role": "user", "content": prompt}, {"role": "system", "content": self.initial_prompt}]
@@ -172,6 +185,7 @@ if __name__ == "__main__":
         num_iterations=3,
         company_name=company_name,
         initial_prompt=f"You are an email-writing assistant for {company_name} that writes first-contact emails to potential clients.",
+        user_name="Vignav",
         company_kb_id=company_kb_id,
         customer_name="Ron",
         customer_company_name="Jane Street",
