@@ -70,7 +70,7 @@ def start_ai():
     #     customer_name=customer_data[0]['name'],
     #     customer_url=[customer_data[0]['company_website']]
     # )
-    time.sleep(45)
+    time.sleep(40)
 
     msg = """Dear Ron,
 
@@ -116,7 +116,7 @@ OpenAI Team"""
         
     print("Emails Sent")
     
-    time.sleep(25)
+    time.sleep(30)
     customer_reply = """Hi Vignav, thanks for reaching out! Wanted to ask more about ChatGPT enterprise security - as a quantitative trading firm dealing with a lot of sensitive financial information, we need to make sure that our data is secure. Have you been audited for compliance with data security standards?
     
     Would also love to discuss this more by phone - my number is 7043510608. 
