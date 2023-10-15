@@ -6,6 +6,7 @@ import urllib.parse
 import json
 import time
 from scripts.rag import set_up_kb 
+from twilio.rest import Client
 
 if os.path.exists("debug.env"):
     load_dotenv("debug.env")
@@ -39,7 +40,7 @@ def start_ai():
     ]
 
     for customer in customers:
-        # PROCESS LINKEDIN
+        call_customer(data['company_name'], customer['name'], customer['phone'])
         customer_desires = [] # get_customer_info(customer['linkedin'])
     print("Customer Data Indexing Complete")
 
@@ -61,11 +62,31 @@ def on_reply(offer, customer):
     print("\n\n\nReplying to Response...")
     print("Reply Sent")
 
-def call_customer(offer, customer):
-    print("\n\n\nCalling Customer...")
-    ## INITIAL MESSAGE GREETING CUSTOMER
-    
+def generate_twiml(text):
+    return str('''<?xml version="1.0" encoding="UTF-8"?>
+               <Response>
+               <Gather input="speech" action="https://188f-24-23-158-128.ngrok-free.app/handle-input" method="POST" speechTimeout="auto">
+               <Say>''' + text + '''</Say>
+               </Gather>
+               </Response>'''
+)
 
+def call_customer(company_name, customer_name, customer_phone):
+    print("\n\n\nCalling Customer...")
+    account_sid = 'ACfdda12c5b78e66cc13365fcce8818585'
+    auth_token = '19627121e9b6024da63d5c86152904b5'
+
+    # Initialize the Twilio Client
+    client = Client(account_sid, auth_token)
+
+    text_to_read = f"Hi {customer_name}, thanks for agreeing to talk to me about {company_name}'s offerings!"
+    twiml = generate_twiml(text_to_read)
+
+    call = client.calls.create(
+        twiml=twiml,
+        to='+17043510608',
+        from_='+18552200409'
+    )
 
     print("Call Complete")
 

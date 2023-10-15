@@ -21,7 +21,7 @@ from twilio.twiml.voice_response import VoiceResponse, Say
 def generate_twiml(text):
     return str('''<?xml version="1.0" encoding="UTF-8"?>
                <Response>
-               <Gather input="speech" action="https://e66f-24-23-158-128.ngrok-free.app/handle-input" method="POST" speechTimeout="auto">
+               <Gather input="speech" action="https://188f-24-23-158-128.ngrok-free.app/handle-input" method="POST" speechTimeout="auto">
                <Say>''' + text + '''</Say>
                </Gather>
                </Response>'''
