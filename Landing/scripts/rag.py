@@ -18,11 +18,12 @@ import superpowered
 import os
 from pydantic.dataclasses import dataclass
 import time
+from dotenv import load_dotenv
 
+if os.path.exists("debug.env"):
+    load_dotenv("debug.env")
 
-OPENAI_API_KEY= "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"
-
-import superpowered
+OPENAI_API_KEY= os.environ['OPENAI_API_KEY']
 
 def set_up_kb(title, description, urls):
     # urls = get_urls(url)
